@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <title>Message Cycler</title>
+    <style>
+        /* Resets and Base Styling */
+        body {
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Large, centered text */
+        #message-display {
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 0 20px;
+            /* Prevents the button from jumping up and down when text wraps to multiple lines */
+            min-height: 150px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Minimalist Button Styling */
+        button {
+            background-color: transparent;
+            color: #ccc;
+            border: 2px solid #333;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            color: #fff;
+            border-color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="message-display">Press the button below.</div>
+    <button id="trigger-btn">Cycle Message</button>
+
+    <script>
+        // --- EDIT YOUR MESSAGES HERE ---
+        const messages = [
+            "You're amazing sweetheart.",
+            "I genuinely care about you and want to see you happy.",
+            "You're so beautiful.",
+            "I might not be here right now but I do mean every word.",
+            "I wanna see you smile and I wanna be the reason you smile.",
+            "I want to be the one you can always count on, no matter what.",
+            "I just want you to know that you are appreciated and missed whenever you're busy.",
+            "I hope you have a wonderful day, and I can't wait to see you again soon.",
+            "I miss you and I hope we can spend some time together soon.",
+            "I care about you deeply and I want to be there for you whenever you need me.",
+            "Tell the voices in your head to shut up.",
+            "I love your bpd(big pretty dimples).",
+            "I love your bpd(big phat dumpy).",
+            "Your singing is so good, I could listen to you all day.",
+            "Sometimes I just want to hug you and never let go.",
+            "I hope you know how much you mean to me and how much I care about you.",
+
+        ];
+        // -------------------------------
+
+        let lastIndex = -1;
+        const displayEl = document.getElementById('message-display');
+        const btnEl = document.getElementById('trigger-btn');
+
+        function showNextMessage() {
+            // Optimization: 'True random' often selects the same item twice in a row, making it look broken.
+            // This loop ensures the new message is always different from the currently displayed one.
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * messages.length);
+            } while (newIndex === lastIndex && messages.length > 1);
+            
+            lastIndex = newIndex;
+            displayEl.innerText = messages[newIndex];
+            
+            const heart = confetti.shapeFromText({ text: '❤️' });
+
+confetti({
+    particleCount: 100,
+    spread: 70,
+    shapes: [heart],
+    scalar: 2
+});
+        }
+
+        btnEl.addEventListener('click', showNextMessage);
+    </script>
+</body>
+</html>
