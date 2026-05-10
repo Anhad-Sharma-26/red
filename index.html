@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="robots" content="noindex, nofollow">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -66,8 +67,8 @@
             "You're so beautiful.",
             "I might not be here right now but I do mean every word.",
             "I wanna see you smile and I wanna be the reason you smile.",
-            "I want to be the one you can always count on, no matter what.",
-            "I just want you to know that you are appreciated and missed whenever you're busy.",
+            
+            "I just want you to know that you are appreciated and missed all the time.",
             "I hope you have a wonderful day, and I can't wait to see you again soon.",
             "I miss you and I hope we can spend some time together soon.",
             "I care about you deeply and I want to be there for you whenever you need me.",
@@ -81,32 +82,35 @@
         ];
         // -------------------------------
 
-        let lastIndex = -1;
-        const displayEl = document.getElementById('message-display');
-        const btnEl = document.getElementById('trigger-btn');
+        let currentIndex = 0; 
+    
+    const displayEl = document.getElementById('message-display');
+    const btnEl = document.getElementById('trigger-btn');
 
-        function showNextMessage() {
-            // Optimization: 'True random' often selects the same item twice in a row, making it look broken.
-            // This loop ensures the new message is always different from the currently displayed one.
-            let newIndex;
-            do {
-                newIndex = Math.floor(Math.random() * messages.length);
-            } while (newIndex === lastIndex && messages.length > 1);
-            
-            lastIndex = newIndex;
-            displayEl.innerText = messages[newIndex];
-            
-            const heart = confetti.shapeFromText({ text: '❤️' });
+    // (Optional) Setup your confetti shape if you are still using the tiny hearts
+    const heartShape = typeof confetti !== 'undefined' ? confetti.shapeFromText({ text: '❤️' }) : null;
 
-confetti({
-    particleCount: 100,
-    spread: 70,
-    shapes: [heart],
-    scalar: 2
-});
+    function showNextMessage() {
+        // Move to the next number. The "% messages.length" part makes it 
+        // instantly loop back to 0 when it reaches the end of your list.
+        currentIndex = (currentIndex + 1) % messages.length;
+        
+        // Update the text on the screen
+        displayEl.innerText = messages[currentIndex];
+        
+        // Trigger the confetti (using the basic tiny hearts as an example)
+        if (typeof confetti !== 'undefined') {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                shapes: [heartShape],
+                scalar: 2
+            });
         }
+    }
 
-        btnEl.addEventListener('click', showNextMessage);
+    // Set up the button click
+    btnEl.addEventListener('click', showNextMessage);
     </script>
 </body>
 </html>
